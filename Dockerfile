@@ -2,7 +2,7 @@ FROM alpine:3.19.0
 LABEL maintainer="JulianPrieber"
 LABEL description="LinkStack Docker"
 
-EXPOSE 80 443
+EXPOSE 443
 
 # Setup apache and php
 RUN apk --no-cache --update \
