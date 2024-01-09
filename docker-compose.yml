@@ -1,32 +1,21 @@
-version: "3.8"
-
+`version: '3'
 services:
   linkstack:
-    hostname: 'linkstack'
-    image: 'linkstackorg/linkstack:latest'
+    container_name: linkstack
+    image: linkstackorg/linkstack
     environment:
-      TZ: 'Europe/Berlin'
-      SERVER_ADMIN: 'admin@example.com'
-      HTTP_SERVER_NAME: 'example.com'
-      HTTPS_SERVER_NAME: 'example.com'
-      LOG_LEVEL: 'info'
-      PHP_MEMORY_LIMIT: '256M'
-      UPLOAD_MAX_FILESIZE: '8M'
+      - HTTP_SERVER_NAME="domain.me" 
+      - HTTPS_SERVER_NAME="domain.me"
+      - SERVER_ADMIN="admin@example.xyz"
+      - TZ="Europe/Berlin"
+      - PHP_MEMORY_LIMIT="512M"
+      - UPLOAD_MAX_FILESIZE="8M"
+    restart: always
     volumes:
-      lsdata:
-    ports:
-      - '80:80'
-      - '443:443'
-    restart: unless-stopped
-    user: apache:apache
-    # read_only: true
-    depends_on:
-      - mysql
-    links:
-      - mysql
-  mysql:
-    image: mysql:8
-    environment:
-        MYSQL_ROOT_PASSWORD: xeFgUGb5mPPn5q2d
-    ports:
-        - 3306:3306
+      - /opt/containers/ls_data/httpdocs:/htdocs
+      - /opt/containers/ls_data/ssl_apache:/etc/ssl/apache2
+    networks:
+      - traefik_web
+networks:
+  traefik_web:
+   external: true`
